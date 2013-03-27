@@ -39,6 +39,7 @@ GEM
       sass (~> 3.2)
     builder (3.0.4)
     cancan (1.6.9)
+    choice (0.1.6)
     coderay (1.0.9)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -75,6 +76,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.21)
     multi_json (1.7.2)
+    nested_form (0.3.1)
     orm_adapter (0.4.0)
     paper_trail (2.7.1)
       activerecord (~> 3.0)
@@ -97,6 +99,11 @@ GEM
       activesupport (= 3.2.11)
       bundler (~> 1.0)
       railties (= 3.2.11)
+    rails-erd (1.1.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      choice (~> 0.1.6)
+      ruby-graphviz (~> 1.0.4)
     railties (3.2.11)
       actionpack (= 3.2.11)
       activesupport (= 3.2.11)
@@ -110,6 +117,7 @@ GEM
       json (~> 1.4)
     ref (1.0.4)
     rolify (3.2.0)
+    ruby-graphviz (1.0.8)
     sass (3.2.7)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -161,9 +169,11 @@ DEPENDENCIES
   hub (>= 1.10.2)
   jquery-rails
   libv8 (>= 3.11.8)
+  nested_form
   paper_trail
   quiet_assets (>= 1.0.2)
   rails (= 3.2.11)
+  rails-erd
   rolify (>= 3.2.0)
   sass-rails (~> 3.2.3)
   sendgrid (>= 1.0.1)

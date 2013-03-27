@@ -24,3 +24,8 @@ gem "hub", ">= 1.10.2", :require => nil, :group => [:development]
 
 gem "paper_trail"
 gem "state_machine"
+gem "nested_form"
+
+group :development do
+  gem 'rails-erd'
+end

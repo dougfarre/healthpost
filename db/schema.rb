@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130327042620) do
+ActiveRecord::Schema.define(:version => 20130327122148) do
 
   create_table "bed_preferences", :force => true do |t|
     t.integer  "request_id"
@@ -41,6 +41,27 @@ ActiveRecord::Schema.define(:version => 20130327042620) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "hospitals", :force => true do |t|
+    t.string   "name"
+    t.integer  "transfer_center_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  create_table "practices", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "transfer_center_id"
+  end
+
+  create_table "providers", :force => true do |t|
+    t.integer  "practice_id"
+    t.string   "name"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "requests", :force => true do |t|
     t.integer  "provider_id"
     t.integer  "transfer_center_id"
@@ -53,6 +74,8 @@ ActiveRecord::Schema.define(:version => 20130327042620) do
     t.boolean  "physician_flag"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
+    t.integer  "user_created_by"
+    t.integer  "user_updated_by"
   end
 
   create_table "roles", :force => true do |t|
@@ -65,6 +88,12 @@ ActiveRecord::Schema.define(:version => 20130327042620) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
+
+  create_table "transfer_centers", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

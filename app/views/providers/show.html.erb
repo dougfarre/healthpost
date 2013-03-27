@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Practice:</b>
+  <%= @provider.practice_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @provider.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_provider_path(@provider) %> |
+<%= link_to 'Back', providers_path %>

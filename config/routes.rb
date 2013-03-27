@@ -1,4 +1,13 @@
 Healthpost::Application.routes.draw do
+  resources :hospitals
+
+
+  resources :providers
+
+
+  resources :practices
+
+
   resources :requests
 
 

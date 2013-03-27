@@ -36,3 +36,11 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
+
+gem "unicorn", ">= 4.3.1"
+gem "bootstrap-sass", ">= 2.3.0.0"
+gem "sendgrid", ">= 1.0.1"
+gem "devise", ">= 2.2.3"
+gem "cancan", ">= 1.6.9"
+gem "rolify", ">= 3.2.0"
+gem "simple_form", ">= 2.1.0"

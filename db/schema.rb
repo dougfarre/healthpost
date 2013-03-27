@@ -11,7 +11,49 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130327003350) do
+ActiveRecord::Schema.define(:version => 20130327042620) do
+
+  create_table "bed_preferences", :force => true do |t|
+    t.integer  "request_id"
+    t.integer  "bed_type_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "bed_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "hospital_bed_availabilities", :force => true do |t|
+    t.integer  "request_id"
+    t.integer  "hospital_id"
+    t.integer  "bed_type_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "hospital_preferences", :force => true do |t|
+    t.integer  "request_id"
+    t.integer  "hospital_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "requests", :force => true do |t|
+    t.integer  "provider_id"
+    t.integer  "transfer_center_id"
+    t.string   "provider_callback_phone"
+    t.string   "patient_name_first"
+    t.string   "patient_name_last"
+    t.datetime "patient_dob"
+    t.string   "patient_ssn"
+    t.string   "complaint"
+    t.boolean  "physician_flag"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
 
   create_table "roles", :force => true do |t|
     t.string   "name"
@@ -49,5 +91,16 @@ ActiveRecord::Schema.define(:version => 20130327003350) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], :name => "index_users_roles_on_user_id_and_role_id"
+
+  create_table "versions", :force => true do |t|
+    t.string   "item_type",  :null => false
+    t.integer  "item_id",    :null => false
+    t.string   "event",      :null => false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
 
 end

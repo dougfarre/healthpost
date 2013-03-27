@@ -1,4 +1,7 @@
 Healthpost::Application.routes.draw do
+  resources :requests
+
+
   authenticated :user do
     root :to => 'home#index'
   end

@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  provider_id: 1
+  transfer_center_id: 1
+  provider_callback_phone: MyString
+  patient_name_first: MyString
+  patient_name_last: MyString
+  patient_dob: 2013-03-27 03:45:30
+  patient_ssn: MyString
+  complaint: MyString
+  physician_flag: false
+
+two:
+  provider_id: 1
+  transfer_center_id: 1
+  provider_callback_phone: MyString
+  patient_name_first: MyString
+  patient_name_last: MyString
+  patient_dob: 2013-03-27 03:45:30
+  patient_ssn: MyString
+  complaint: MyString
+  physician_flag: false

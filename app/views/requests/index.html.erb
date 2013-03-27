@@ -1,0 +1,39 @@
+<h1>Listing requests</h1>
+
+<table>
+  <tr>
+    <th>Provider</th>
+    <th>Transfer center</th>
+    <th>Provider callback phone</th>
+    <th>Patient name first</th>
+    <th>Patient name last</th>
+    <th>Patient dob</th>
+    <th>Patient ssn</th>
+    <th>Complaint</th>
+    <th>Physician flag</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @requests.each do |request| %>
+  <tr>
+    <td><%= request.provider_id %></td>
+    <td><%= request.transfer_center_id %></td>
+    <td><%= request.provider_callback_phone %></td>
+    <td><%= request.patient_name_first %></td>
+    <td><%= request.patient_name_last %></td>
+    <td><%= request.patient_dob %></td>
+    <td><%= request.patient_ssn %></td>
+    <td><%= request.complaint %></td>
+    <td><%= request.physician_flag %></td>
+    <td><%= link_to 'Show', request %></td>
+    <td><%= link_to 'Edit', edit_request_path(request) %></td>
+    <td><%= link_to 'Destroy', request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Request', new_request_path %>

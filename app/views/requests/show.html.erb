@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Provider:</b>
+  <%= @request.provider_id %>
+</p>
+
+<p>
+  <b>Transfer center:</b>
+  <%= @request.transfer_center_id %>
+</p>
+
+<p>
+  <b>Provider callback phone:</b>
+  <%= @request.provider_callback_phone %>
+</p>
+
+<p>
+  <b>Patient name first:</b>
+  <%= @request.patient_name_first %>
+</p>
+
+<p>
+  <b>Patient name last:</b>
+  <%= @request.patient_name_last %>
+</p>
+
+<p>
+  <b>Patient dob:</b>
+  <%= @request.patient_dob %>
+</p>
+
+<p>
+  <b>Patient ssn:</b>
+  <%= @request.patient_ssn %>
+</p>
+
+<p>
+  <b>Complaint:</b>
+  <%= @request.complaint %>
+</p>
+
+<p>
+  <b>Physician flag:</b>
+  <%= @request.physician_flag %>
+</p>
+
+
+<%= link_to 'Edit', edit_request_path(@request) %> |
+<%= link_to 'Back', requests_path %>

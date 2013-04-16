@@ -1,19 +1,53 @@
 <%= simple_form_for(@request) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :provider_id %>
-    <%= f.input :transfer_center_id %>
-    <%= f.input :provider_callback_phone %>
-    <%= f.input :patient_name_first %>
-    <%= f.input :patient_name_last %>
-    <%= f.input :patient_dob %>
-    <%= f.input :patient_ssn %>
-    <%= f.input :complaint %>
-    <%= f.input :physician_flag %>
+  <div class="row">
+    <div class="span4">
+      <%= label_tag "Provider" %>
+      <%= f.collection_select :provider_id, current_user.practice.providers, :id, :name %>
+    </div>
+    <div class="span4">
+      <%= f.input :transfer_center_id %>
+    </div>
+    <div class="span4">
+      <%= f.input :provider_callback_phone, :input_html => { :value => current_user.practice.phone } %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span4">
+      <%= f.input :patient_name_first %>
+    </div>
+    <div class="span4">
+      <%= f.input :patient_name_last %>
+    </div>
+    <div class="span4">
+      <%= label_tag :patient_dob %>
+      <%= f.text_field :patient_dob, :data => { :behaviour => "datepicker" } %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span4">
+      <%= f.input :patient_ssn %>
+    </div>
+    <div class="span4">
+      <br/>
+      <%= f.input :physician_flag, :inline_label => true, :label => false %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span4">
+      <%= f.input :complaint, as: :text, :input_html => { class: 'row-fluid', rows: 3 } %>
+    </div>
   </div>
 
   <div class="form-actions">
     <%= f.button :submit %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $('[data-behaviour~=datepicker]').datepicker()
+</script>

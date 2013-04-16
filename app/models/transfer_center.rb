@@ -3,4 +3,5 @@ class TransferCenter < ActiveRecord::Base
 
   has_many :practices
   has_many :hospitals
+  has_many :users
 end

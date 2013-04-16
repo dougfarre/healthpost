@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130327122148) do
+ActiveRecord::Schema.define(:version => 20130416144844) do
 
   create_table "bed_preferences", :force => true do |t|
     t.integer  "request_id"
@@ -24,6 +24,19 @@ ActiveRecord::Schema.define(:version => 20130327122148) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "diagnoses", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "diagnosis_details", :force => true do |t|
+    t.string   "name"
+    t.integer  "diagnosis_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "hospital_bed_availabilities", :force => true do |t|
@@ -53,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20130327122148) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.integer  "transfer_center_id"
+    t.string   "phone"
   end
 
   create_table "providers", :force => true do |t|
@@ -60,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20130327122148) do
     t.string   "name"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "phone"
   end
 
   create_table "requests", :force => true do |t|
@@ -76,6 +91,8 @@ ActiveRecord::Schema.define(:version => 20130327122148) do
     t.datetime "updated_at",              :null => false
     t.integer  "user_created_by"
     t.integer  "user_updated_by"
+    t.integer  "diagnosis_id"
+    t.integer  "diagnosis_detail_id"
   end
 
   create_table "roles", :force => true do |t|
@@ -109,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20130327122148) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "name"
+    t.integer  "practice_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

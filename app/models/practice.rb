@@ -3,6 +3,7 @@ class Practice < ActiveRecord::Base
 
   belongs_to :transfer_center
 
+  has_many :requests
   has_many :providers
   has_many :users
 

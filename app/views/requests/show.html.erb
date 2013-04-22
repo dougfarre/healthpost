@@ -1,7 +1,76 @@
 <p id="notice"><%= notice %></p>
 
+  <div class="row">
+    <div class="span4">
+      <b>Doctor:</b>
+      <%= text_field_tag :provider, @request.provider.name, :disabled => true %>
+    </div>
+    <div class="span4">
+      <%= label_tag "Transfer center" %>
+      <%= text_field_tag "transfer_center", @request.practice.transfer_center.name, :disabled => true %>
+    </div>
+    <div class="span4">
+      <%= label_tag "Callback phone" %>
+      <%= text_field_tag "provider_callback_phone", @request.provider_callback_phone, :disabled => true %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span4">
+      <%= label_tag "Patient first name" %>
+      <%= text_field_tag "patient_first_name", @request.patient_first_name, :disabled => true %>
+    </div>
+    <div class="span4">
+      <%= label_tag "Patient last name" %>
+      <%= text_field_tag "patient_last_name", @request.patient_last_name, :disabled => true %>
+    </div>
+    <div class="span4">
+      <%= f.input :patient_dob do %>
+        <% unless @request.patient_dob.blank? %>
+          <%= f.text_field :patient_dob, :value => @request.patient_dob.strftime("%m/%d/%Y"), :data => { :behaviour => "datepicker" } %>
+        <% else %>
+          <%= f.text_field :patient_dob, :data => { :behaviour => "datepicker" } %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span4">
+      <%= f.input :patient_ssn %>
+    </div>
+    <div class="span4">
+      <%= f.association :diagnosis, collection: Diagnosis.all, label: "Admit diagnosis", label_method: :name, value_method: :id, :prompt => "Select..." %>
+    </div>
+    <div class="span4">
+      <%= f.association :diagnosis_detail, :collection => Diagnosis.all, :as => :grouped_select, :group_method => :diagnosis_details, prompt: "Select...", disabled: true %>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="span4">
+      <%= f.input :complaint, as: :text, :input_html => { rows: 6 } %>
+    </div>
+    <div class="span4">
+      <%= f.association :hospital_preferences, collection: @request.practice.transfer_center.hospitals, 
+            label: "Hospital preferences", label_method: :name, value_method: :id, as: :check_boxes,
+            checked: @request.hospital_preferences.map {|x| x.hospital_id} %>
+    </div>
+    <div class="span4">
+      <%= f.association :bed_preferences, collection: BedType.all, 
+            label: "Bed preferences", label_method: :name, value_method: :id, as: :check_boxes,
+            checked: @request.bed_preferences.map {|x| x.bed_type_id} %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span4">
+      <br/>
+      <%= f.input :physician_flag, :collection => [['Yes', true], ['Need to speak to accepting physician', false]], :inline_label => true, :label => false, as: :radio_buttons %>
+    </div>
+  </div>
+
 <p>
-  <b>Provider:</b>
   <%= @request.provider_id %>
 </p>
 

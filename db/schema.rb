@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416144844) do
+ActiveRecord::Schema.define(:version => 20130416162306) do
 
   create_table "bed_preferences", :force => true do |t|
     t.integer  "request_id"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20130416144844) do
     t.integer  "user_updated_by"
     t.integer  "diagnosis_id"
     t.integer  "diagnosis_detail_id"
+    t.integer  "practice_id"
   end
 
   create_table "roles", :force => true do |t|

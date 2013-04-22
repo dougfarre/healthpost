@@ -24,8 +24,8 @@ class RequestsController < ApplicationController
   # GET /requests/new
   # GET /requests/new.json
   def new
-    @request = Request.new
-
+    @request = current_user.practice.requests.build
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @request }
@@ -40,8 +40,10 @@ class RequestsController < ApplicationController
   # POST /requests
   # POST /requests.json
   def create
-    @request = Request.new(params[:request])
-
+    @request = current_user.practice.requests.build
+    @request.assign_attributes(params[:request])
+    @request.user_created_by = current_user.id
+    
     respond_to do |format|
       if @request.save
         format.html { redirect_to @request, notice: 'Request was successfully created.' }
@@ -57,6 +59,7 @@ class RequestsController < ApplicationController
   # PUT /requests/1.json
   def update
     @request = Request.find(params[:id])
+    @request.user_updated_by = current_user.id
 
     respond_to do |format|
       if @request.update_attributes(params[:request])

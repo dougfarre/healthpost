@@ -1,16 +1,18 @@
 <%= simple_form_for(@request) do |f| %>
   <%= f.error_notification %>
+  <%#= @request.errors.full_messages %>
 
   <div class="row">
     <div class="span4">
-      <%= label_tag "Provider" %>
-      <%= f.collection_select :provider_id, current_user.practice.providers, :id, :name %>
+      <%= f.association :provider, collection: current_user.practice.providers, label_method: :name, value_method: :id, :prompt => "Select..." %>
     </div>
     <div class="span4">
-      <%= f.input :transfer_center_id %>
+      <%= label_tag "Transfer center" %>
+      <%= text_field_tag "transfer_center", @request.practice.transfer_center.name, :disabled => true %>
+      <%= hidden_field_tag "transfer_center_id", @request.practice.transfer_center.id %>
     </div>
     <div class="span4">
-      <%= f.input :provider_callback_phone, :input_html => { :value => current_user.practice.phone } %>
+      <%= f.input :provider_callback_phone %>
     </div>
   </div>
 
@@ -22,8 +24,13 @@
       <%= f.input :patient_name_last %>
     </div>
     <div class="span4">
-      <%= label_tag :patient_dob %>
-      <%= f.text_field :patient_dob, :data => { :behaviour => "datepicker" } %>
+      <%= f.input :patient_dob do %>
+        <% unless @request.patient_dob.blank? %>
+          <%= f.text_field :patient_dob, :value => @request.patient_dob.strftime("%m/%d/%Y"), :data => { :behaviour => "datepicker" } %>
+        <% else %>
+          <%= f.text_field :patient_dob, :data => { :behaviour => "datepicker" } %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 
@@ -32,22 +39,36 @@
       <%= f.input :patient_ssn %>
     </div>
     <div class="span4">
-      <br/>
-      <%= f.input :physician_flag, :inline_label => true, :label => false %>
+      <%= f.association :diagnosis, collection: Diagnosis.all, label: "Admit diagnosis", label_method: :name, value_method: :id, :prompt => "Select..." %>
+    </div>
+    <div class="span4">
+      <%= f.association :diagnosis_detail, :collection => Diagnosis.all, :as => :grouped_select, :group_method => :diagnosis_details, prompt: "Select...", disabled: true %>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="span4">
+      <%= f.input :complaint, as: :text, :input_html => { rows: 6 } %>
+    </div>
+    <div class="span4">
+      <%= f.association :hospital_preferences, collection: @request.practice.transfer_center.hospitals, 
+            label: "Hospital preferences", label_method: :name, value_method: :id, as: :check_boxes,
+            checked: @request.hospital_preferences.map {|x| x.hospital_id} %>
+    </div>
+    <div class="span4">
+      <%= f.association :bed_preferences, collection: BedType.all, 
+            label: "Bed preferences", label_method: :name, value_method: :id, as: :check_boxes,
+            checked: @request.bed_preferences.map {|x| x.bed_type_id} %>
     </div>
   </div>
 
   <div class="row">
     <div class="span4">
-      <%= f.input :complaint, as: :text, :input_html => { class: 'row-fluid', rows: 3 } %>
+      <br/>
+      <%= f.input :physician_flag, :collection => [['Yes', true], ['Need to speak to accepting physician', false]], :inline_label => true, :label => false, as: :radio_buttons %>
     </div>
   </div>
-
   <div class="form-actions">
     <%= f.button :submit %>
   </div>
 <% end %>
-
-<script type="text/javascript">
-  $('[data-behaviour~=datepicker]').datepicker()
-</script>

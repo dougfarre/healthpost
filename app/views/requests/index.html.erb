@@ -1,13 +1,11 @@
-<h1>Listing requests</h1>
+<h1>Active Requests</h1>
 
-<table>
+<table class="table">
   <tr>
-    <th>Provider</th>
-    <th>Transfer center</th>
-    <th>Provider callback phone</th>
-    <th>Patient name first</th>
-    <th>Patient name last</th>
+    <th>Date created</th>
+    <th>Patient name</th>
     <th>Patient dob</th>
+    <th>Doctor</th>
     <th>Patient ssn</th>
     <th>Complaint</th>
     <th>Physician flag</th>
@@ -18,12 +16,10 @@
 
 <% @requests.each do |request| %>
   <tr>
-    <td><%= request.provider_id %></td>
-    <td><%= request.transfer_center_id %></td>
-    <td><%= request.provider_callback_phone %></td>
-    <td><%= request.patient_name_first %></td>
-    <td><%= request.patient_name_last %></td>
-    <td><%= request.patient_dob %></td>
+    <td><%= request.created_at.strftime("%m/%d/%y") %></td>
+    <td><%= request.patient_name_last %>, <%= request.patient_name_first %></td>
+    <td><%= request.patient_dob.strftime("%m/%d/%y") %></td>
+    <td><%= request.provider.name %></td>
     <td><%= request.patient_ssn %></td>
     <td><%= request.complaint %></td>
     <td><%= request.physician_flag %></td>

@@ -7,3 +7,4 @@ en:
     attributes:
       request:
         physician_flag: "Spoke to accepting physician?" 
+        provider: "Doctor"

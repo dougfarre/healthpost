@@ -1,119 +1,126 @@
 <p id="notice"><%= notice %></p>
 
   <div class="row">
-    <div class="span4">
-      <b>Doctor:</b>
-      <%= text_field_tag :provider, @request.provider.name, :disabled => true %>
-    </div>
-    <div class="span4">
-      <%= label_tag "Transfer center" %>
-      <%= text_field_tag "transfer_center", @request.practice.transfer_center.name, :disabled => true %>
-    </div>
-    <div class="span4">
-      <%= label_tag "Callback phone" %>
-      <%= text_field_tag "provider_callback_phone", @request.provider_callback_phone, :disabled => true %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="span4">
-      <%= label_tag "Patient first name" %>
-      <%= text_field_tag "patient_first_name", @request.patient_first_name, :disabled => true %>
-    </div>
-    <div class="span4">
-      <%= label_tag "Patient last name" %>
-      <%= text_field_tag "patient_last_name", @request.patient_last_name, :disabled => true %>
-    </div>
-    <div class="span4">
-      <%= f.input :patient_dob do %>
-        <% unless @request.patient_dob.blank? %>
-          <%= f.text_field :patient_dob, :value => @request.patient_dob.strftime("%m/%d/%Y"), :data => { :behaviour => "datepicker" } %>
-        <% else %>
-          <%= f.text_field :patient_dob, :data => { :behaviour => "datepicker" } %>
+    <div class="span12">
+      <div class="pull-left">
+        <h4><%= "#{@request.practice.name}: Request ##{@request.id}" %></h4>
+      </div>
+      
+      <div class="pull-right">
+        <%= simple_form_for(@request) do |y| %> 
+          <%= hidden_field_tag :transition, "submit_new_request" %>
+          <%= y.button :submit, "Cancel Request", :class => "btn btn-danger" %>
         <% end %>
-      <% end %>
+      </div>
+
+      <div class="pull-right"> 
+      </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="span4">
-      <%= f.input :patient_ssn %>
-    </div>
-    <div class="span4">
-      <%= f.association :diagnosis, collection: Diagnosis.all, label: "Admit diagnosis", label_method: :name, value_method: :id, :prompt => "Select..." %>
-    </div>
-    <div class="span4">
-      <%= f.association :diagnosis_detail, :collection => Diagnosis.all, :as => :grouped_select, :group_method => :diagnosis_details, prompt: "Select...", disabled: true %>
-    </div>
-  </div>
+    <div class="span8">
+
+      <div class="row-fluid">
+        <div class="span4">
+          <%= label_tag "Doctor phone" %>
+          <%= text_field_tag :provider, @request.provider.name, :disabled => true %>
+        </div>
+        <div class="span4">
+          <%= label_tag "Transfer center" %>
+          <%= text_field_tag "transfer_center", @request.practice.transfer_center.name, :disabled => true %>
+        </div>
+        <div class="span4">
+          <%= label_tag "Callback phone" %>
+          <%= text_field_tag "provider_callback_phone", @request.provider_callback_phone, :disabled => true %>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span4">
+          <%= label_tag "Patient first name" %>
+          <%= text_field_tag "patient_first_name", @request.patient_name_first, :disabled => true %>
+        </div>
+        <div class="span4">
+          <%= label_tag "Patient last name" %>
+          <%= text_field_tag "patient_last_name", @request.patient_name_last, :disabled => true %>
+        </div>
+        <div class="span4">
+          <%= label_tag :patient_dob %>
+          <%= text_field_tag :patient_dob, @request.patient_dob.strftime("%m/%d/%Y"), disabled: true %>
+       </div>
+      </div>
+
+      <div class="row-fluid"  >
+        <div class="span4">
+          <%= label_tag :patient_ssn %>
+          <%= text_field_tag :patient_ssn, @request.patient_ssn, :disabled => true %>
+        </div>
+        <div class="span4">
+          <%= label_tag :admin_diagnosis %>
+          <%= text_field_tag :diagnosis, @request.diagnosis.name, :disabled => true %>
+        </div>
+        <div class="span4">
+          <%= label_tag :diagnosis_detail %>
+          <%= text_field_tag :diagnosis_detail, @request.diagnosis_detail.name, :disabled => true %>
+        </div>
+      </div>
   
-  <div class="row">
-    <div class="span4">
-      <%= f.input :complaint, as: :text, :input_html => { rows: 6 } %>
+      <div class="row-fluid">
+        <div class="span4">
+           <%= label_tag "Spoke to accepting physician" %>
+          <label class="radio">
+            <%= radio_button_tag :physician_flag,"yes", @request.physician_flag, :disabled => true %>
+            <%= label_tag :yes, "Yes" %>
+          </label>
+          <label class="radio">
+            <%= radio_button_tag :physician_flag,"no",!@request.physician_flag %>
+            <%= label_tag :yes, "No, need to speak with accepting physician", :disabled => true %>
+          </label>
+        </div>
+                <div class="span4">
+          <%= label_tag :hospital_preferences %>
+          <% @request.transfer_center.hospitals.each do |hospital| %>
+            <label class="checkbox">
+              <%= check_box_tag :hp, hospital.name, ((@request.hospital_preferences.map {|x| x.hospital_id }).include?(hospital.id) ? true : false), :disabled => true %>
+              <%= hospital.name %>
+            </label>
+          <% end %>
+        </div>
+        <div class="span4">
+          <%= label_tag :bed_preferences %>
+          <% BedType.all.each do |bed_type| %>
+            <label class="checkbox">
+              <%= check_box_tag :bp, bed_type.name, ((@request.bed_preferences.map {|x| x.bed_type_id }).include?(bed_type.id) ? true : false), :disabled => true %>
+              <%= bed_type.name %>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span4">
+          <%= label_tag :complaint %>
+          <%= text_area_tag :complaint, @request.complaint, :disabled => true %>
+        </div>
+      </div>
     </div>
-    <div class="span4">
-      <%= f.association :hospital_preferences, collection: @request.practice.transfer_center.hospitals, 
-            label: "Hospital preferences", label_method: :name, value_method: :id, as: :check_boxes,
-            checked: @request.hospital_preferences.map {|x| x.hospital_id} %>
-    </div>
-    <div class="span4">
-      <%= f.association :bed_preferences, collection: BedType.all, 
-            label: "Bed preferences", label_method: :name, value_method: :id, as: :check_boxes,
-            checked: @request.bed_preferences.map {|x| x.bed_type_id} %>
+    
+    <div class="span4 current_status">
+      <div class="row-fluid">
+        <%= render "flow", :locals => {:request => @request} %>
+        <% unless @request.state_histories.blank? %>
+          <%= hidden_field_tag :histories, @request.state_histories.to_json %>
+        <% end %>
+      </div>
+
+      <div class="row-fluid">
+        <div style="height: 40px;"></div>
+          <%= render :partial => "actions", :locals => { :model => @request } %>
+        </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="span4">
-      <br/>
-      <%= f.input :physician_flag, :collection => [['Yes', true], ['Need to speak to accepting physician', false]], :inline_label => true, :label => false, as: :radio_buttons %>
-    </div>
-  </div>
+  <br/>
 
-<p>
-  <%= @request.provider_id %>
-</p>
-
-<p>
-  <b>Transfer center:</b>
-  <%= @request.transfer_center_id %>
-</p>
-
-<p>
-  <b>Provider callback phone:</b>
-  <%= @request.provider_callback_phone %>
-</p>
-
-<p>
-  <b>Patient name first:</b>
-  <%= @request.patient_name_first %>
-</p>
-
-<p>
-  <b>Patient name last:</b>
-  <%= @request.patient_name_last %>
-</p>
-
-<p>
-  <b>Patient dob:</b>
-  <%= @request.patient_dob %>
-</p>
-
-<p>
-  <b>Patient ssn:</b>
-  <%= @request.patient_ssn %>
-</p>
-
-<p>
-  <b>Complaint:</b>
-  <%= @request.complaint %>
-</p>
-
-<p>
-  <b>Physician flag:</b>
-  <%= @request.physician_flag %>
-</p>
-
-
-<%= link_to 'Edit', edit_request_path(@request) %> |
-<%= link_to 'Back', requests_path %>
+<%= link_to 'Dashboard', requests_path, class: "btn" %>

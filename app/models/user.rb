@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   
   has_many :requests, foreign_key: :user_created_by
   has_many :requests, foreign_key: :user_updated_by
+  has_many :state_histories
 
   belongs_to :practice
   belongs_to :transfer_center

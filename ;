@@ -25,9 +25,13 @@
   margin-left: 10px;
   margin-bottom: 5px;
   height: 5em; 
-  float: left;
-  vertical-align: middle;
 }
+
+i
+{
+  color: white !important;
+}
+
 
 .window:hover {
   box-shadow: 2px 2px 19px #444;
@@ -38,11 +42,16 @@
   filter:alpha(opacity=60);
 }
 
+.component 
+{
+  float: left;
+  vertical-align: middle;
+  
+}
+
 .vertical_icon
 {
   margin-top: 40px;
-  float: left;
-  vertical-align: middle;
 }
 
 .horizontal_icon_last
@@ -59,6 +68,11 @@
 .active { border:1px dotted green; }
 .hover  { border:1px dotted red; }
 
+._jsPlumb_connector { z-index:4; }
+._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel{ z-index:21;cursor:pointer; }
+.hl { border:3px solid red; }
+#debug { position:absolute; background-color:black; color:red; z-index:5000 }
+
 .aLabel {
   background-color:white;
   padding:0.4em;
@@ -73,7 +87,6 @@
 .background_table
 {
   display: block;
-  margin-top: 0px;
 }
 
 .brow_border
@@ -84,7 +97,6 @@
   width: 110px;
   float: left;
   color: grey;
-  margin-top: 45px;
 }
 
 .brow
@@ -96,11 +108,9 @@
 
 .title
 {
-  margin-bottom: 0px;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 20px;
-  padding-left: 115px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  padding-left: 107px;
 }
 
 .title2
@@ -123,23 +133,9 @@
 .overlay
 {
   position: absolute;
-  margin-top: -10px;
 }
 
 .current_status
 {
   min-width: 370px !important;
-}
-
-.back_orange 
-{
-  background-color: orange;
-}
-.back_blue 
-{
-  background-color: blue;
-}
-.back_green 
-{
-  background-color: green;
 }

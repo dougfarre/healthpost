@@ -1,0 +1,10 @@
+<%= simple_form_for(model) do |x| %> 
+          <%= hidden_field_tag :transition, "submit_new_request" %>
+          <%= x.button :submit, "Submit Request", class: "btn btn-large btn-block btn-primary" %>
+        <% end %>
+        <% if model.aasm_state == "new_request" %>
+          <%= link_to 'Edit Request', edit_request_path(model), class: "btn btn-large btn-block", disabled: true, :title => 'poop' %>
+        <% else %>
+          <div class="btn btn-large btn-block disabled", disabled: true >Edit Request</div>
+        <% end %>
+

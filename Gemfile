@@ -26,6 +26,8 @@ gem "paper_trail"
 gem "state_machine"
 gem "nested_form"
 gem 'bootstrap-datepicker-rails'
+gem 'aasm'
+gem 'jquery-ui-rails'
 
 group :development do
   gem 'rails-erd'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416162306) do
+ActiveRecord::Schema.define(:version => 20130425141230) do
 
   create_table "bed_preferences", :force => true do |t|
     t.integer  "request_id"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20130416162306) do
     t.integer  "diagnosis_id"
     t.integer  "diagnosis_detail_id"
     t.integer  "practice_id"
+    t.string   "aasm_state"
   end
 
   create_table "roles", :force => true do |t|
@@ -106,6 +107,15 @@ ActiveRecord::Schema.define(:version => 20130416162306) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
+
+  create_table "state_histories", :force => true do |t|
+    t.integer  "request_id"
+    t.string   "state"
+    t.string   "notes"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+  end
 
   create_table "transfer_centers", :force => true do |t|
     t.string   "name"

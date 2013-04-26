@@ -42,7 +42,7 @@ class RequestsController < ApplicationController
   def create
     @request = current_user.practice.requests.build
     @request.assign_attributes(params[:request])
-    @request.user_created_by = current_user.id
+    @request.user_created_by = current_user
     
     respond_to do |format|
       if @request.save
@@ -59,10 +59,11 @@ class RequestsController < ApplicationController
   # PUT /requests/1.json
   def update
     @request = Request.find(params[:id])
-    @request.user_updated_by = current_user.id
+    @request.user_updated_by = current_user
+    @request.send(params[:transition]) unless params[:transition].blank?
 
     respond_to do |format|
-      if @request.update_attributes(params[:request])
+      if @request.update_attributes(params[:request]) 
         format.html { redirect_to @request, notice: 'Request was successfully updated.' }
         format.json { head :no_content }
       else

@@ -1,5 +1,7 @@
+
+<% states = @request.state_histories.map { |sh| sh.state } %>
 <div class="background_table">
-  <div class="title">Current Status</div>
+  <!--div class="title">Current Status</div-->
   <div style="clear: both;"></div>
   <div class="brow"></div>
   <div class="brow_border"></div>
@@ -12,30 +14,70 @@
     <div class="spacer">&nbsp;</div>
     <div class="title2"><%=@request.transfer_center.name %></div>
     <div style="clear:both;"></div>
-    <div class="window" id="new_request">New Request</div>
+    <% if states.include?("request_submitted") %>
+      <div class="window back_blue" id="new_request_submitted">Submitted Request</div>
+    <% else %>
+      <div class="window" id="new_request_submitted">Submitted Request</div>
+    <% end %>
     <div class="component vertical_icon"><i class="icon-arrow-right"></i></div>
-    <div class="window" id="new_request_submitted">Submitted New Request</div>
+    <% if states.include?("availability_submitted") %>
+      <div class="window back_blue" id="reviewing_request">Reviewing Request</div>
+    <% elsif states.include?("request_submitted") %>
+      <div class="window back_orange" id="reviewing_request">Reviewing Request</div>
+    <% else %>
+      <div class="window" id="reviewing_request">Reviewing Request</div>
+    <% end %>
     <div class="component vertical_icon"><i class="icon-arrow-right"></i></div>
-    <div class="window" id="reviewing_request">Reviewing Request</div>
+    <% if states.include?("not_fulfilled") %>
+      <div class="window back_red" id="updated_availability">No Availability</div>
+    <% else %> 
+      <div class="window" id="updated_availability">No Availability</div>
+    <% end %>
     <div style="clear: both;"></div>
     <div class="horizontal_icon_last"><i class="icon-arrow-down"></i></div>
   </div>
   <div class="row2">
-    <div class="window" id="reviewing_updated_availability">Reviewing Updated Availability</div>
+    <% if states.include?("availability_approved") %>
+      <div class="window back_blue" id="reviewing_updated_availability">Reviewing Availability</div>
+    <% elsif states.include?("availability_submitted") %>
+      <div class="window back_orange" id="reviewing_updated_availability">Reviewing Availability</div>
+    <% else %>
+      <div class="window" id="reviewing_updated_availability">Reviewing Availability</div>
+    <% end %>
     <div class="component vertical_icon"><i class="icon-arrow-left"></i></div>
-    <div class="window" id="submitted_updated_availability">Submited Updated Availability</div>
-    <div class="component vertical_icon"><i class="icon-arrow-left"></i></div>
-    <div class="window" id="updated_availability">Availability Updated</div>
+    <% if states.include?("availability_submitted") %>
+      <div class="window back_blue" id="submitted_updated_availability">Submited Availability</div>
+    <% else %>
+      <div class="window" id="submitted_updated_availability">Submited Availability</div>
+    <% end %>
     <div style="clear: both;"></div>
     <div class="horizontal_icon_first"><i class="icon-arrow-down"></i></div>
   </div>
   <div class="row3">
-    <div class="window" id="approved_availabilty">Approved Availability</div>
+    <% if states.include?("availability_approved") %>
+      <div class="window back_blue" id="approved_availabilty">Approved Availability</div>
+    <% else %>
+      <div class="window" id="approved_availabilty">Approved Availability</div>
+    <% end %>
     <div class="component vertical_icon"><i class="icon-arrow-right"></i></div>
     <div class="window" id="declined_availability" style="display: none;">Declined Availability</div>
-    <div class=" window" id="reviewing_approved_availability">Reviewing Approved Availability</div>
+    <% if states.include?("reservation_confirmed") %>
+      <div class="window back_blue" id="reviewing_approved_availability">Reviewing Approved Availability</div>
+    <% elsif states.include?("availability_approved") %>
+      <div class="window back_orange" id="reviewing_approved_availability">Reviewing Approved Availability</div>
+    <% else %>
+      <div class="window" id="reviewing_approved_availability">Reviewing Approved Availability</div>
+    <% end %>
+    
     <div class="component vertical_icon"><i class="icon-arrow-right"></i></div>
-    <div class="window" id="confirmed">Confirmed</div>
+    <% if states.include?("reservation_confirmed") %>
+      <div class="window back_green" id="confirmed">Confirmed</div>
+    <% elsif states.include?("not_fulfilled") %>
+      <div class="window back_red" id="confirmed">Reservation Cancelled</div>
+    <% else %>
+      <div class="window" id="confirmed">Confirmed</div>
+    <% end %>
+    
     <div class="window" id="canceled" style="display: none;">Canceled</div>
     <div style="clear: both;"></div>
   </div>

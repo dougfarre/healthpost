@@ -1,1 +1,41 @@
+<% requests.each do |request| %>
+  <tr>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle;">
+      <div style="display: table; width: 100%;">
+        <div style="display: table-cell; vertical-align: middle;">
+          <%= raw show_id(request) %>
+        </div>
+        <div style="display: table-cell;"> 
+          <div style="margin-left: 10px;">
+            <%= raw show_state(label_type, state_name, side) %> 
+          </div>
+          <div style="margin-left: 10px;">
+            <%= request.created_at.strftime("%m/%d/%Y")  %> <%= "#{request.patient_name_last}, #{request.patient_name_first}" %>
+          </div>
+        </div>
+        <div style="display: table-cell; vertical-align: middle;">
+          <div class="pull-right">
+            <% if side == "provider" %>
+              <div class="btn-group">
+                <% if state_name == "new_request "%>
+                  <%= link_to 'Edit', edit_request_path(request), class: "btn" %>
+                  <!--button class="btn btn-danger">Cancel</button-->
+                  <!--button class="btn btn-primary">Submit</button-->
+                <% end %>
+                <%= link_to 'Show', request, class: "btn btn-primary" %> 
+              </div>
+            <% elsif side == "transfer_center" %>
+              <div class="btn-group">
+                <%= link_to 'Show', request, class: "btn btn-primary" %> 
+                <!--button class="btn btn-danger">Cancel</button-->
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </td>
+  </tr>
+<% end %>
 

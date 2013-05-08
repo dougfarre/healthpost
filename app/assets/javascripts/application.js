@@ -16,4 +16,5 @@
 //= require jquery_nested_form
 //= require bootstrap-datepicker
 //= require jquery.ui.all
+//= require selectbox
 //= require_tree .

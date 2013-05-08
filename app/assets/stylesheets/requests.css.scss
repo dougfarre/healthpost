@@ -47,7 +47,7 @@
 
 .horizontal_icon_last
 {
-  margin-left: 283px;
+  margin-left: 165px;
 }
 
 .horizontal_icon_first
@@ -55,6 +55,10 @@
   margin-left: 45px;
 }
 
+.solid_border
+{
+  border-style:solid;
+}
 
 .active { border:1px dotted green; }
 .hover  { border:1px dotted red; }
@@ -116,7 +120,7 @@
 .spacer
 {
   float: left;
-  width: 12.4em;
+  width: 3.4em;
 
 }
 
@@ -130,10 +134,13 @@
 {
   min-width: 370px !important;
 }
-
+.back_red
+{
+  background-color: red;
+}
 .back_orange 
 {
-  background-color: orange;
+  background-color: #FFD700;
 }
 .back_blue 
 {

@@ -22,8 +22,10 @@ class Request < ActiveRecord::Base
   
   accepts_nested_attributes_for :hospital_preferences,        allow_destroy: true
   accepts_nested_attributes_for :bed_preferences,             allow_destroy: true
-  accepts_nested_attributes_for :hospital_bed_availabilities, allow_destroy: true
+  accepts_nested_attributes_for :hospital_bed_availabilities, allow_destroy: true, reject_if: :all_blank
   
+  attr_accessor :hospital_availabilities, :bed_availabilities, :transition
+
   validates :practice,        :presence => true
   validates :provider,        :presence => true
   validates :transfer_center, :presence => true
@@ -38,85 +40,71 @@ class Request < ActiveRecord::Base
                         :patient_ssn, :provider_callback_phone
 
   before_validation :set_redundant_keys
+  after_validation  :check_for_associations
+  before_save       :perform_transition
   after_create      :set_default_phone
   after_save        :save_state_history
 
   aasm :column => :aasm_state  do
-    state :new_request, initial: true
-    state :new_request_submitted
-    state :reviewing_request
-    #state :updated_availability
-    state :submitted_updated_availability
-    #state :reviewing_updated_availability
-    state :approved_availability
-    state :declined_availability
-    #state :reviewing_approved_availability
-    state :confirmed
+    state :new_request, initial: true 
+    state :request_submitted 
+    state :availability_submitted
+    state :availability_approved #left ts 
+    state :not_fulfilled
+    state :reservation_confirmed
     state :canceled
     
-    event :submit_new_request do
-      transitions :from => :new_request, :to => :new_request_submitted
+    event :submit_request do
+      transitions :from => :new_request, :to => :request_submitted
     end
 
-    event :review_request do
-      transitions :from => [:new_request_submitted, :declined_availability], :to => :reviewing_request
+    event :submit_availability do 
+      transitions :from => :request_submitted, :to => :availability_submitted
     end
     
-    #event :update_availability do
-      #transitions :from => :reviewing_new_request, :to => :updated_availability
-    #end
-
-    event :submit_updated_availability do
-      #transitions :from => :updated_availability, :to => :submitted_updated_availability
-      transitions :from => :review_request, :to => :submitted_updated_availability
+    event :decline_request do
+      transitions :from => :request_submitted, :to => :not_fulfilled
     end
 
-    #event :review_updated_availability do
-      #transitions :from => :submitted_updated_availability, :to => :reviewing_updated_availability
-    #end
- 
     event :approve_availability do
-      transitions :from => :submited_updated_availability, :to => :approved_availability
-    end 
+      transitions :from => :availability_submitted, :to => :availability_approved
+    end
 
     event :decline_availability do
-      transitions :from => [:review_updated_availability, :reviewing_approved_availability], :to => :declined_availability
+      transitions :from => [:availability_submitted], :to => :not_fulfilled
     end
 
-    event :review_approved_availability do
-      transitions :from => :approved_availability, :to => :reviewing_approved_availability
+    event :confirm_reservation do
+      transitions :from => :availability_approved, :to => :reservation_confirmed
     end
-  
-    event :confirm do
-      #transitions :from => :reviewing_approved_availability, :to => :confirmed
-      transitions :from => :approved_availability, :to => :confirmed
+
+    event :decline_reservation do
+      transitions :from => [:availability_approved], :to => :not_fulfilled
     end
   end
 
-  def self.get_provider_name(state_name)
+  def self.get_ts_name_string(state_name)
     case state_name 
-      when :new_request
-        "New Requests: Awaiting Submission"
-      when :new_request_submitted
-        "Request Submitted: Awaiting Action from Transfer Center"
-      when :reviewing_request
-        "Request in Review by Transfer Center"
-      when :reviewing_updated_availability
-        "Request in Review by Transfer Center"
-      when :submitted_updated_availability
-        "Response Submitted: Awaiting Action from Practice"
-      when :updated_availability
-        "Response in Review: Awaiting Acion from Practice"
-      when :approved_availability
-        "Response Approved by Practice: Awaiting Action from Transfer Center"
-      when :declined_availability
-        "Response Declined by Practice: Awaiting Action from Transfer Center"
-      when :reviewing_approved_availability
-        "Reviewing Final Details"
-      when :confirmed
-        "Direct Admit Process Complete"
-      when :canceled
-        "Direct Admin Process Canceled"
+      when "request_submitted"
+        "submit availability"
+      when "availability_submitted"
+        "awaiting review"
+      when "availability_approved"
+        "submit confirmation receipt"
+    end
+  end
+
+
+  def self.get_provider_name_string(state_name)
+    case state_name 
+      when "new_request"
+        "submit request"
+      when "request_submitted"
+        "awaiting availability"
+      when "availability_submitted"
+        "review availability"
+      when "availability_approved"
+        "awaiting confirmation receipt"
     end
   end
 
@@ -155,6 +143,10 @@ class Request < ActiveRecord::Base
     end
   end
 
+  def hospital_bed_availability_attributes=(attributes)
+    @fail.boom
+  end
+
   private
 
   def set_default_phone
@@ -170,5 +162,16 @@ class Request < ActiveRecord::Base
 
   def save_state_history
     StateHistory.find_or_create_by_request_id_and_state(request_id: self.id, state: self.aasm_state)
+  end
+
+  def check_for_associations
+    if self.aasm_state == "request_submitted" and self.transition != "decline_request"
+      errors[:base] << "Associations can't be blank" if self.hospital_bed_availabilities.length < 1
+      logger.debug "HI I MA HER                    "
+    end
+  end
+
+  def perform_transition 
+    self.send(self.transition) unless self.transition.blank?
   end
 end

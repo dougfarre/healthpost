@@ -28,6 +28,7 @@ gem "nested_form"
 gem 'bootstrap-datepicker-rails'
 gem 'aasm'
 gem 'jquery-ui-rails'
+gem 'selectbox_rails'
 
 group :development do
   gem 'rails-erd'

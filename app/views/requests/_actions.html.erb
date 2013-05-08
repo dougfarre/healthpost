@@ -1,10 +1,20 @@
-<%= simple_form_for(model) do |x| %> 
-          <%= hidden_field_tag :transition, "submit_new_request" %>
-          <%= x.button :submit, "Submit Request", class: "btn btn-large btn-block btn-primary" %>
-        <% end %>
-        <% if model.aasm_state == "new_request" %>
-          <%= link_to 'Edit Request', edit_request_path(model), class: "btn btn-large btn-block", disabled: true, :title => 'poop' %>
-        <% else %>
-          <div class="btn btn-large btn-block disabled", disabled: true >Edit Request</div>
-        <% end %>
+<% if model.aasm_state == "new_request" %>
+  <%= simple_form_for(model) do |x| %> 
+    <%= hidden_field_tag :transition, "submit_request" %>
+    <%= x.button :submit, "Submit Request", class: "btn btn-large btn-block btn-primary" %>
+  <% end %>
+  <%= link_to 'Edit Request', edit_request_path(model), class: "btn btn-large  btn-block" %>
 
+<% elsif model.aasm_state == "request_submitted" && 
+  current_user.roles.map {|x| x.name}.include?("transfer_center") && false %>
+  <%= simple_form_for(model) do |x| %> 
+    <%= hidden_field_tag :transition, "submit_availability" %>
+    <%#= x.button :submit, "Save and Submit Availability", class: "btn btn-large btn-block btn-primary" %>
+  <% end %>
+
+  <%= simple_form_for(model) do |x| %> 
+    <%= hidden_field_tag :transition, "decline_request" %>
+    <%= x.button :submit, "Decline Request", class: "btn btn-large btn-block btn-danger" %>
+  <% end %>
+  <% else %>
+<% end %>

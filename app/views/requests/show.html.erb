@@ -1,152 +1,86 @@
-<p id="notice"><%= notice %></p>
+<p id="notice"><% notice %></p>
 
-  <div class="row">
-    <div class="span12">
-      <div class="pull-left">
-        <h4><%= "#{@request.practice.name}: Request ##{@request.id}" %></h4>
-      </div>
+<div class="row">
+  <div class="span12">
+    <div class="pull-left">
+      <h4><%= "#{@request.practice.name}: Request ##{@request.id}" %></h4>
+    </div>
       
-      <% if @request.aasm_state == "new_request" %> 
+    <% if @request.aasm_state == "new_request" %> 
       <div class="pull-right">
-        <%= simple_form_for(@request) do |y| %> 
-          <%= hidden_field_tag :transition, "delete_request" %>
-          <%= y.button :submit, "Delete Request", :class => "btn btn-danger" %>
-        <% end %>
+        <%= render partial: "delete_form", locals: { :request => @request } %>
       </div>
-      <% end %>
+    <% end %>
 
-      <div class="pull-right"> 
-      </div>
+    <div class="pull-right"> 
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <div class="span8">
+<div class="row">
+  <div class="span8">
+    <%= render partial: "show", locals: { :request => @request } %>
+
+    <% if @request.aasm_state == "new_request" %>
       <div class="row-fluid">
         <div class="span4">
-          <%= label_tag "Doctor phone" %>
-          <%= text_field_tag :provider, @request.provider.name, :disabled => true %>
-        </div>
-        <div class="span4">
-          <%= label_tag "Transfer center" %>
-          <%= text_field_tag "transfer_center", @request.practice.transfer_center.name, :disabled => true %>
-        </div>
-        <div class="span4">
-          <%= label_tag "Callback phone" %>
-          <%= text_field_tag "provider_callback_phone", @request.provider_callback_phone, :disabled => true %>
+          <%= label_tag :complaint %>
+          <%= text_area_tag :complaint, @request.complaint, :disabled => true %>
         </div>
       </div>
+    <% end %>
 
-      <div class="row-fluid">
-        <div class="span4">
-          <%= label_tag "Patient first name" %>
-          <%= text_field_tag "patient_first_name", @request.patient_name_first, :disabled => true %>
-        </div>
-        <div class="span4">
-          <%= label_tag "Patient last name" %>
-          <%= text_field_tag "patient_last_name", @request.patient_name_last, :disabled => true %>
-        </div>
-        <div class="span4">
-          <%= label_tag :patient_dob %>
-          <%= text_field_tag :patient_dob, @request.patient_dob.strftime("%m/%d/%Y"), disabled: true %>
-       </div>
-      </div>
-
-      <div class="row-fluid"  >
-        <div class="span4">
-          <%= label_tag :patient_ssn %>
-          <%= text_field_tag :patient_ssn, @request.patient_ssn, :disabled => true %>
-        </div>
-        <div class="span4">
-          <%= label_tag :admin_diagnosis %>
-          <%= text_field_tag :diagnosis, @request.diagnosis.name, :disabled => true %>
-        </div>
-        <div class="span4">
-          <%= label_tag :diagnosis_detail %>
-          <%= text_field_tag :diagnosis_detail, @request.diagnosis_detail.name, :disabled => true %>
-        </div>
-      </div>
-  
-      <div class="row-fluid">
-        <div class="span4">
-           <%= label_tag "Spoke to accepting physician" %>
-          <label class="radio">
-            <%= radio_button_tag :physician_flag,"yes", @request.physician_flag, :disabled => true %>
-            <%= label_tag :yes, "Yes" %>
-          </label>
-          <label class="radio">
-            <%= radio_button_tag :physician_flag,"no",!@request.physician_flag %>
-            <%= label_tag :yes, "No, need to speak with accepting physician", :disabled => true %>
-          </label>
-        </div>
-        <div class="span4">
-          <%= label_tag :hospital_preferences %>
-          <% @request.transfer_center.hospitals.each do |hospital| %>
-            <label class="checkbox">
-              <%= check_box_tag :hp, hospital.name, ((@request.hospital_preferences.map {|x| x.hospital_id }).include?(hospital.id) ? true : false), :disabled => true %>
-              <%= hospital.name %>
-            </label>
-          <% end %>
-        </div>
-        <div class="span4">
-          <%= label_tag :bed_preferences %>
-          <% BedType.all.each do |bed_type| %>
-            <label class="checkbox">
-              <%= check_box_tag :bp, bed_type.name, ((@request.bed_preferences.map {|x| x.bed_type_id }).include?(bed_type.id) ? true : false), disabled: true %>
-              <%= bed_type.name %>
-            </label>
-          <% end %>
-        </div>
-      </div>
-
-      <% if @request.aasm_state == "new_request" %>
-        <div class="row-fluid">
-          <div class="span4">
-            <%= label_tag :complaint %>
-            <%= text_area_tag :complaint, @request.complaint, :disabled => true %>
-          </div>
-        </div>
-      <% end %>
-
-      <div class="row-fluid">
-        <div class="span12">&nbsp;</div>
-      </div>
-      <% states = @request.state_histories.map { |sh| sh.state } %>
-      <% transfer_center_user = current_user.roles.map {|x| x.name}.include?("transfer_center") %>
-      <% if @request.aasm_state == "request_submitted" &&  transfer_center_user %>
-        <%= render partial: "availability", locals: { :transfer_center_user => transfer_center_user } %>
-      <%# elsif @request.aasm_state == "availability_submitted" && !transfer_center_user %>
-      <% elsif states.include?("availability_approved") %>
-        <%= render partial: "show_availability", locals: { :transfer_center_user => transfer_center_user }  %>
-      <% end %>
+    <div class="row-fluid">
+      <div class="span12">&nbsp;</div>
     </div>
-    <div class="span4 current_status">
-      iam an transfecenteruser == <%= transfer_center_user %> 
-      <% if @request.aasm_state != "new_request" %>
-        <div class="row-fluid">
-          <div class="span12">
-            <%= label_tag :complaint %>
-            <%= text_area_tag :complaint, @request.complaint, :disabled => true %>
-          </div>
-        </div>
-      <% end %>
 
+    <% states = @request.state_histories.map { |sh| sh.state } %>
+
+    <% if current_user.transfer_center_user? %>
+      <% if @request.aasm_state == "request_submitted" %>
+        <%= render partial: "availability_form_transfer_center", locals: { :request => @request } %>
+      <% elsif states.include?("availability_submitted") %>
+        
+      <% end %>
+    <% end %>
+
+    <% if current_user.provider_user? %>
+      <% if @request.aasm_state == "availability_submitted" %>
+        <%= render partial: "availability_form_provider", locals: { :transfer_center_user => current_user.transfer_center_user? }  %>
+      <% elsif states.include?("availability_approved") %>
+
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="span4 current_status">
+    <% if @request.aasm_state != "new_request" %>
       <div class="row-fluid">
         <div class="span12">
-          &nbsp;
+          <%= label_tag :complaint %>
+          <%= text_area_tag :complaint, @request.complaint, :disabled => true %>
         </div>
-      </div>        
-      <div class="row-fluid">
-        <%= render "flow", :locals => {:request => @request} %>
-        <% unless @request.state_histories.blank? %>
-          <%= hidden_field_tag :histories, @request.state_histories.to_json %>
-        <% end %>
       </div>
-      <div class="row-fluid">
-        <div style="height: 40px;"></div>
-          <%= render :partial => "actions", :locals => { :model => @request } %>
-        </div>
+    <% end %>
+
+    <div class="row-fluid">
+      <div class="span12">
+        &nbsp;
+      </div>
+    </div>        
+
+    <div class="row-fluid">
+      <%= render "flow", :locals => {:request => @request} %>
+      <% unless @request.state_histories.blank? %>
+        <%= hidden_field_tag :histories, @request.state_histories.to_json %>
+      <% end %>
     </div>
+
+    <div class="row-fluid">
+      <div style="height: 40px;"></div>
+        <%= render :partial => "actions", :locals => { :model => @request } %>
+      </div>
   </div>
-  <br/>
+</div>
+<br/>
 <%= link_to 'Dashboard', requests_path, class: "btn" %>

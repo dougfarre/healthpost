@@ -17,4 +17,12 @@ class User < ActiveRecord::Base
 
   belongs_to :practice
   belongs_to :transfer_center
+
+  def transfer_center_user?
+    self.roles.map {|x| x.name}.include?("transfer_center")
+  end
+
+  def provider_user?
+    self.roles.map {|x| x.name}.include?("provider")
+  end
 end

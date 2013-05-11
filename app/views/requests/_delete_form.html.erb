@@ -1,0 +1,4 @@
+<%= simple_form_for(request) do |y| %> 
+  <%= hidden_field_tag :transition, "delete_request" %>
+  <%= y.button :submit, "Delete Request", :class => "btn btn-danger" %>
+<% end %>

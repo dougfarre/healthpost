@@ -1,0 +1,60 @@
+    <div class="row-fluid" style="background: white; padding: 5px;">
+        <div class="span8">
+          <%= simple_nested_form_for(request, remote: true, html: { id: "availability_submit"}, input_html: { data: { url: '/requests.json', type: :json } })  do |f| %>
+          <table class="table table-striped">
+            <thead>
+              <th><%= label_tag :hospital_availability %></th>
+              <th><%= label_tag :bed_availability %></th>
+            </thead>
+            <tbody>
+              <% bed_types = BedType.all_with_indicator(request) %>
+              <%= f.fields_for :hospital_bed_availabilities, @availabilities do |avail_form| %>
+                <tr>
+                  <td>
+                    <label class="checkbox">
+                      <%= avail_form.check_box :hospital_id, { checked: false }, avail_form.object.hospital.id, "" %>
+                      <%= avail_form.object.hospital.name %>
+                      <% if request.hospital_preferences.map {|x| x.hospital_id}.include?(avail_form.object.hospital.id) %>
+                        <i class="icon-ok"></i>
+                      <% end %>
+                    </label>
+                  </td>
+                  <td>
+                    <%= avail_form.input :bed_type_id, collection: bed_types, label: false, label_method: :name, value_method: :id, :prompt => "Select...", :as => 'select', disabled:true %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+         </div>
+
+        <div class="span4">
+          <div class="row-fluid">
+            <div class="span12">
+              <br/>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span12">
+              &nbsp;
+            </div>
+          </div>
+           <div class="row-fluid">
+            <div class="span11">
+              <%= hidden_field_tag :transition, "submit_availability" %>
+              <%= f.button :submit, "Save and Submit", class: "btn btn-large btn-block btn-primary" %>
+              </br>
+            </div>
+          </div>
+          <% end %>
+          <div class="row-fluid">
+            <div class="span11">
+              <%= simple_form_for request do |x| %> 
+                <%= hidden_field_tag :transition, "decline_request" %>
+                <%= x.button :submit, "No Availability", class: "btn btn-large btn-block btn-danger" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+

@@ -1,0 +1,76 @@
+    <div class="row-fluid">
+      <div class="span4">
+        <%= label_tag "Doctor phone" %>
+        <%= text_field_tag :provider, request.provider.name, :disabled => true %>
+      </div>
+      <div class="span4">
+        <%= label_tag "Transfer center" %>
+        <%= text_field_tag "transfer_center", request.practice.transfer_center.name, :disabled => true %>
+      </div>
+      <div class="span4">
+        <%= label_tag "Callback phone" %>
+        <%= text_field_tag "provider_callback_phone", request.provider_callback_phone, :disabled => true %>
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span4">
+        <%= label_tag "Patient first name" %>
+        <%= text_field_tag "patient_first_name", request.patient_name_first, :disabled => true %>
+      </div>
+      <div class="span4">
+        <%= label_tag "Patient last name" %>
+        <%= text_field_tag "patient_last_name", request.patient_name_last, :disabled => true %>
+      </div>
+      <div class="span4">
+        <%= label_tag :patient_dob %>
+        <%= text_field_tag :patient_dob, request.patient_dob.strftime("%m/%d/%Y"), disabled: true %>
+     </div>
+    </div>
+
+    <div class="row-fluid"  >
+      <div class="span4">
+        <%= label_tag :patient_ssn %>
+        <%= text_field_tag :patient_ssn, request.patient_ssn, :disabled => true %>
+      </div>
+      <div class="span4">
+        <%= label_tag :admin_diagnosis %>
+        <%= text_field_tag :diagnosis, request.diagnosis.name, :disabled => true %>
+      </div>
+      <div class="span4">
+        <%= label_tag :diagnosis_detail %>
+        <%= text_field_tag :diagnosis_detail, request.diagnosis_detail.name, :disabled => true %>
+      </div>
+    </div>
+  
+    <div class="row-fluid">
+      <div class="span4">
+         <%= label_tag "Spoke to accepting physician" %>
+        <label class="radio">
+          <%= radio_button_tag :physician_flag,"yes", request.physician_flag, :disabled => true %>
+          <%= label_tag :yes, "Yes" %>
+        </label>
+        <label class="radio">
+          <%= radio_button_tag :physician_flag, "no", !request.physician_flag %>
+          <%= label_tag :yes, "No, need to speak with accepting physician", :disabled => true %>
+        </label>
+      </div>
+      <div class="span4">
+        <%= label_tag :hospital_preferences %>
+        <% request.transfer_center.hospitals.each do |hospital| %>
+          <label class="checkbox">
+            <%= check_box_tag :hp, hospital.name, ((request.hospital_preferences.map {|x| x.hospital_id }).include?(hospital.id) ? true : false), :disabled => true %>
+            <%= hospital.name %>
+          </label>
+        <% end %>
+      </div>
+      <div class="span4">
+        <%= label_tag :bed_preferences %>
+        <% BedType.all.each do |bed_type| %>
+          <label class="checkbox">
+            <%= check_box_tag :bp, bed_type.name, ((request.bed_preferences.map {|x| x.bed_type_id }).include?(bed_type.id) ? true : false), disabled: true %>
+            <%= bed_type.name %>
+          </label>
+        <% end %>
+      </div>
+    </div>

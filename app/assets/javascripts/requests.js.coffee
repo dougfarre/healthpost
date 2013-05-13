@@ -42,16 +42,15 @@ jQuery ->
     e.preventDefault()
     $(this).tab('show')
 
-  $('.pull-down').each ->
-    $(this).css('margin-top', $(this).parent().height()-$(this).height() - 52)
+  #$('.pull-down').each ->
+    #$(this).css('margin-top', $(this).parent().height()-$(this).height() - 52)
 
   $('form#availability_submit').bind 'ajax:success', (evt, data, status, xhr) ->
-    console.log(evt)
-    console.log(data)
-    console.log(status)
-    console.log(xhr)
+    $('.alert-success').toggle(true)
+    $('#success_text').append("Availability submitted, refresh page to see changes")
+    $(".btn[name='commit']").attr("disabled", "disabled")
 
   $('form#availability_submit').bind 'ajax:error', (evt, data, status, xhr) ->
-    $('.alert-error').css('display', 'display')
-    #$('error-text').text($.parseJSON(xhr.responseText))
-    $('error-text').text(xhr.responseText + status.responseText)
+    $('.alert-error').toggle(true)
+    $('#error_text').append(data.responseText)
+

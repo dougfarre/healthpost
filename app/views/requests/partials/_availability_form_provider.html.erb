@@ -1,0 +1,20 @@
+  <div class="span4">
+    <div class="row-fluid">
+      <div class="span11">
+        <br/>
+        <%= simple_form_for request do |x| %> 
+          <%= hidden_field_tag :transition, "approve_availability" %>
+          <%= x.button :submit, "Save and Submit", class: "btn btn-large btn-block btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span11">
+        <%= simple_form_for request do |x| %> 
+          <%= hidden_field_tag :transition, "decline_availability" %>
+          <%= x.button :submit, "Decline", class: "btn btn-large btn-block btn-danger" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+

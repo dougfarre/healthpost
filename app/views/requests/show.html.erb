@@ -8,7 +8,7 @@
       
     <% if @request.aasm_state == "new_request" %> 
       <div class="pull-right">
-        <%= render partial: "delete_form", locals: { :request => @request } %>
+        <%= render partial: "requests/partials/delete_form", locals: { :request => @request } %>
       </div>
     <% end %>
 
@@ -19,7 +19,7 @@
 
 <div class="row">
   <div class="span8">
-    <%= render partial: "show", locals: { :request => @request } %>
+    <%= render partial: "requests/partials/show", locals: { :request => @request } %>
 
     <% if @request.aasm_state == "new_request" %>
       <div class="row-fluid">
@@ -38,17 +38,29 @@
 
     <% if current_user.transfer_center_user? %>
       <% if @request.aasm_state == "request_submitted" %>
-        <%= render partial: "availability_form_transfer_center", locals: { :request => @request } %>
-      <% elsif states.include?("availability_submitted") %>
-        
+        <%= render partial: "requests/partials/availability_form_transfer_center", locals: { :request => @request } %>
+      <% elsif @request.aasm_state == "availability_submitted" %>
+        <div class="row-fluid" style="background: white; padding: 5px;">
+          <%= render partial: "requests/partials/availability_show", locals: { :request => @request }  %>
+        </div>
+      <% elsif @request.aasm_state == "availability_approved" %>
+        <div class="row-fluid" style="background: white; padding: 5px;">
+          <%= render partial: "requests/partials/availability_show", locals: { :request => @request }  %>
+          <%= render partial: "requests/partials/confirm_form", locals: { :request => @request } %>
+        </div>
       <% end %>
     <% end %>
 
     <% if current_user.provider_user? %>
       <% if @request.aasm_state == "availability_submitted" %>
-        <%= render partial: "availability_form_provider", locals: { :transfer_center_user => current_user.transfer_center_user? }  %>
-      <% elsif states.include?("availability_approved") %>
-
+        <div class="row-fluid" style="background: white; padding: 5px;">
+          <%= render partial: "requests/partials/availability_show", locals: { :request => @request }  %>
+          <%= render partial: "requests/partials/availability_form_provider", locals: { :request => @request }  %>
+        </div>
+      <% elsif @request.aasm_state == "availability_approved" %>
+        <div class="row-fluid" style="background: white; padding: 5px;">
+          <%= render partial: "requests/partials/availability_show", locals: { :request => @request }  %>
+        </div>
       <% end %>
     <% end %>
   </div>
@@ -58,19 +70,19 @@
       <div class="row-fluid">
         <div class="span12">
           <%= label_tag :complaint %>
-          <%= text_area_tag :complaint, @request.complaint, :disabled => true %>
+          <%= text_area_tag :complaint, @request.complaint, :disabled => true, class: "complaints_area" %>
         </div>
       </div>
     <% end %>
 
-    <div class="row-fluid">
+    <!--div class="row-fluid">
       <div class="span12">
         &nbsp;
       </div>
-    </div>        
+    </div-->        
 
     <div class="row-fluid">
-      <%= render "flow", :locals => {:request => @request} %>
+      <%= render "requests/partials/flow", :locals => {:request => @request} %>
       <% unless @request.state_histories.blank? %>
         <%= hidden_field_tag :histories, @request.state_histories.to_json %>
       <% end %>
@@ -78,7 +90,7 @@
 
     <div class="row-fluid">
       <div style="height: 40px;"></div>
-        <%= render :partial => "actions", :locals => { :model => @request } %>
+        <%= render :partial => "requests/partials/actions", :locals => { :model => @request } %>
       </div>
   </div>
 </div>

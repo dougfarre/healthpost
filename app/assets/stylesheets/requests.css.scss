@@ -100,9 +100,9 @@
 
 .title
 {
-  margin-bottom: 0px;
+  margin-bottom: 20px;
   font-size: 14px;
-  font-weight: normal;
+  font-weight: bold;
   line-height: 20px;
   padding-left: 115px;
 }
@@ -145,8 +145,17 @@
 .back_blue 
 {
   background-color: blue;
+  color: white;
 }
 .back_green 
 {
   background-color: green;
+}
+
+div.controls > select.date {
+  width: 80px !important;
+}
+
+.complaints_area {
+  width: 317px !important;
 }

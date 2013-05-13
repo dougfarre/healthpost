@@ -4,8 +4,7 @@ class RequestsController < ApplicationController
   # GET /requests.json
   def index
     @requests = Request.all
-    ts = current_user.roles.map {|x| x.name}.include?("transfer_center")
-    if ts 
+    if current_user.transfer_center_user? 
       #@requests = Request.where(:transfer_center_id => current_user.transfer_center_id)
       respond_to do |format|
         format.html { render  action: 'ts_index' } 

@@ -24,12 +24,19 @@
       <%= f.input :patient_name_last %>
     </div>
     <div class="span4">
+      <%= f.input :patient_dob, :as => :date, :start_year => Date.today.year - 12,
+          :end_year => 1900,
+          :order => [ :day, :month, :year], :required => true %> 
+      <% if false %>
       <%= f.input :patient_dob do %>
         <% unless @request.patient_dob.blank? %>
-          <%= f.text_field :patient_dob, :value => @request.patient_dob.strftime("%m/%d/%Y"), :data => { :behaviour => "datepicker" } %>
+          <%#= f.text_field :patient_dob, :value => @request.patient_dob.strftime("%m/%d/%Y"), :data => { :behaviour => "datepicker" } %>
+          <%= f.text_field :patient_dob, :value => @request.patient_dob.strftime("%m/%d/%Y") %>
         <% else %>
-          <%= f.text_field :patient_dob, :data => { :behaviour => "datepicker" } %>
+          <%#= f.text_field :patient_dob, :data => { :behaviour => "datepicker" } %>
+          <%= f.text_field :patient_dob %>
         <% end %>
+      <% end %>
       <% end %>
     </div>
   </div>
@@ -65,6 +72,7 @@
   <div class="row">
     <div class="span4">
       <br/>
+      Spoke to accepting physician?
       <%= f.input :physician_flag, :collection => [['Yes', true], ['Need to speak to accepting physician', false]], :inline_label => true, :label => false, as: :radio_buttons %>
     </div>
   </div>

@@ -1,7 +1,15 @@
-<% if current_user.provider_user? %>
-  <%= link_to "Healthpost - Provider Panel", root_path, :class => 'brand' %>
+
+<% if current_user %>
+  <% if current_user.provider_user? %>
+    <%#= link_to "Healthpost - Provider Panel", root_path, :class => 'brand ' %>
+    <%= link_to image_tag("http://healthpost.com/images/main/logo_healthPost_small_color.png") + " -  Provider Panel", root_path, :class => 'brand' %>
+  <% else %>
+    <%#= link_to "Healthpost - Trasfer Center Panel", root_path, :class => 'brand' %>
+    <%= link_to image_tag("http://healthpost.com/images/main/logo_healthPost_small_color.png") + " -  Transfer Center Panel", root_path, :class => 'brand' %>
+  <% end %>
 <% else %>
-  <%= link_to "Healthpost - Trasfer Center Panel", root_path, :class => 'brand' %>
+  <%#= link_to "Healthpost", root_path, :class => 'brand' %>
+  <%= link_to image_tag("http://healthpost.com/images/main/logo_healthPost_small_color.png"), root_path, :class => 'brand' %>
 <% end %>
 
 <ul class="nav">

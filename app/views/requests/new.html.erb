@@ -1,6 +1,6 @@
-<h1>New Request</h1>
-<h3>Origonating from <%= current_user.practice.name %></h3>
+<h2>New Request</h2>
+<h4>Originating from <%= current_user.practice.name %></h4>
 
-<%= render 'form' %>
+<%= render 'requests/partials/form' %>
 
 <%= link_to 'Back', requests_path %>

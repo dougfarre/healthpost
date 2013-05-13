@@ -1,0 +1,25 @@
+  <div class="span8">
+    <table class="table table-striped">
+      <thead>
+        <th><%= label_tag :hospital_availability %></th>
+        <th><%= label_tag :bed_availability %></th>
+      </thead>
+      <tbody>
+        <% bed_types = BedType.all_with_indicator(request) %>
+        <% request.hospital_bed_availabilities.each do |availability| %>
+          <tr>
+            <td>
+              <%= availability.hospital.name %>
+              <% if request.hospital_preferences.map {|x| x.hospital_id}.include?(availability.hospital.id) %>
+                <i class="icon-ok"></i>
+              <% end %>
+            </td>
+            <td>
+              <%= availability.bed_type.name %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+

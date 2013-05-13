@@ -1,7 +1,16 @@
-    <div class="row-fluid" style="background: white; padding: 5px;">
+    <div class="row-fluid availability" style="background: white; padding: 5px;">
+      <div class="alert alert-error" style="display: none;">
+        <a class="close" data-dismiss="alert">×</a>
+        <div class="error_text"></div>
+      </div>
+      <div class="alert alert-success" style="display: none;">
+        <a class="close" data-dismiss="alert">×</a>
+        <div class="success_text"></div>
+      </div> 
+      <div class="row-fluid">
         <div class="span8">
           <%= simple_nested_form_for(request, remote: true, html: { id: "availability_submit"}, input_html: { data: { url: '/requests.json', type: :json } })  do |f| %>
-          <table class="table table-striped">
+          <table class="table table-striped reduce_margins">
             <thead>
               <th><%= label_tag :hospital_availability %></th>
               <th><%= label_tag :bed_availability %></th>
@@ -26,8 +35,8 @@
               <% end %>
             </tbody>
           </table>
-         </div>
-
+          <div class="check_legend"><i class="icon-ok"></i> Patient preferred hospitals</div>
+        </div>
         <div class="span4">
           <div class="row-fluid">
             <div class="span12">
@@ -57,4 +66,5 @@
           </div>
         </div>
       </div>
+    </div>
 

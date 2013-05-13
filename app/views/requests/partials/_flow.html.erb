@@ -2,6 +2,7 @@
 <% states = @request.state_histories.map { |sh| sh.state } %>
 <div class="background_table">
   <div class="title">Request Status</div>
+  <div style="clear: both;"></div>
   <div class="brow"></div>
   <div class="brow_border"></div>
   <div class="brow"></div>
@@ -79,5 +80,22 @@
     
     <div class="window" id="canceled" style="display: none;">Canceled</div>
     <div style="clear: both;"></div>
+  </div>
+  <div class=row5">
+    <div class="legend_title">Legend</div>
+  </div>
+  <div class="row6">
+    <div class="legend back_blue">
+      Status
+    </div>
+    <div class="arrow_spacer vertical_icon"></div>
+    <div class="legend back_orange">
+      Pending
+    </div>
+    <div class="arrow_spacer vertical_icon"></div>
+    <div class="legend back_red">
+      Cancelled
+    </div>
+
   </div>
 </div>

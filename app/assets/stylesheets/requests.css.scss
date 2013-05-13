@@ -29,6 +29,32 @@
   vertical-align: middle;
 }
 
+.legend {
+  border:1px solid #346789;
+  box-shadow: 2px 2px 19px #aaa;
+  -o-box-shadow: 2px 2px 19px #aaa;
+  -webkit-box-shadow: 2px 2px 19px #aaa;
+  -moz-box-shadow: 2px 2px 19px #aaa;
+  -moz-border-radius:0.5em;
+  border-radius:0.5em;
+  opacity:0.8;
+  filter:alpha(opacity=80);
+  width:6em;
+  text-align:center;
+  z-index:20; 
+  background-color:#eeeeef;
+  color:black;
+  padding:0.5em;
+  font-size:0.9em;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  height: 2em; 
+  float: left;
+  vertical-align: middle;
+}
+
 .window:hover {
   box-shadow: 2px 2px 19px #444;
   -o-box-shadow: 2px 2px 19px #444;
@@ -107,6 +133,14 @@
   padding-left: 115px;
 }
 
+.legend_title
+{
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 20px;
+  padding-left: 143px;
+}
 .title2
 {
 
@@ -128,6 +162,19 @@
 {
   position: absolute;
   margin-top: -10px;
+  background-color:white;
+  padding-top: 5px;
+  padding-bottom: 10px;
+
+  box-shadow: 2px 2px 19px #aaa;
+  -o-box-shadow: 2px 2px 19px #aaa;
+  -webkit-box-shadow: 2px 2px 19px #aaa;
+  -moz-box-shadow: 2px 2px 19px #aaa;
+  -moz-border-radius:0.5em;
+  border-radius:0.5em;
+  opacity:0.8;
+  filter:alpha(opacity=80);
+
 }
 
 .current_status
@@ -137,6 +184,7 @@
 .back_red
 {
   background-color: red;
+  color: white;
 }
 .back_orange 
 {
@@ -152,10 +200,44 @@
   background-color: green;
 }
 
+.back_green 
+{
+  background-color: white;
+}
+
+.arrow_spacer {
+  width: 15px;
+}
+
+.reduce_margins {
+  margin-bottom: -10px !important;
+}
+
+.table td {
+  padding-bottom: 0px !important;
+}
+
+.check_legend {
+  padding: 8px;
+}
+
 div.controls > select.date {
   width: 80px !important;
 }
 
 .complaints_area {
   width: 317px !important;
+}
+
+.availability {
+  background-color:white;
+  box-shadow: 2px 2px 19px #aaa;
+  -o-box-shadow: 2px 2px 19px #aaa;
+  -webkit-box-shadow: 2px 2px 19px #aaa;
+  -moz-box-shadow: 2px 2px 19px #aaa;
+  -moz-border-radius:0.5em;
+  border-radius:0.5em;
+  opacity:0.8;
+  filter:alpha(opacity=80);
+
 }

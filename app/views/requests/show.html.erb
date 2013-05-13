@@ -81,7 +81,11 @@
       </div>
     </div-->        
 
-    <div class="row-fluid">
+      <% if @request.aasm_state == "request_submitted" || @request.aasm_state == "availability_submitted" %>
+        <div class="row-fluid pull-down">
+      <% else %>
+        <div class="row-fluid">
+      <% end %>
       <%= render "requests/partials/flow", :locals => {:request => @request} %>
       <% unless @request.state_histories.blank? %>
         <%= hidden_field_tag :histories, @request.state_histories.to_json %>

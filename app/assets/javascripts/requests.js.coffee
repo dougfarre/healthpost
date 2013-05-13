@@ -24,9 +24,10 @@ jQuery ->
       $("select[id^='request_hospital_bed_availabilities_attributes_" + row_id + "']").val("")
     else
       $("select[id^='request_hospital_bed_availabilities_attributes_" + row_id + "']").removeAttr("disabled")
-         
+   
   $("form#availability_submit").submit (e) ->
     e.preventDefault()
+    $('.alert').css('display', 'none')
     answer = confirm('This action is not reversible.  Do you want to proceed?') 
     if (!(answer == true))
       return false 
@@ -40,3 +41,17 @@ jQuery ->
   $("#myTab a").click (e) ->
     e.preventDefault()
     $(this).tab('show')
+
+  $('.pull-down').each ->
+    $(this).css('margin-top', $(this).parent().height()-$(this).height() - 52)
+
+  $('form#availability_submit').bind 'ajax:success', (evt, data, status, xhr) ->
+    console.log(evt)
+    console.log(data)
+    console.log(status)
+    console.log(xhr)
+
+  $('form#availability_submit').bind 'ajax:error', (evt, data, status, xhr) ->
+    $('.alert-error').css('display', 'display')
+    #$('error-text').text($.parseJSON(xhr.responseText))
+    $('error-text').text(xhr.responseText + status.responseText)
